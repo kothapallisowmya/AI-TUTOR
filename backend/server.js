@@ -60,12 +60,12 @@ if (isDev) {
 // The frontend lives in the parent directory (project root)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const FRONTEND_DIR = path.join(__dirname, '..');
+const FRONTEND_DIR = path.join(__dirname, '..', 'public');
 app.use(express.static(FRONTEND_DIR, {
   index: 'index.html',
-  // Don't serve .env, node_modules, backend/ as static files
+  // Set headers for caching and dev
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.js') && !filePath.includes('node_modules')) {
+    if (filePath.endsWith('.js')) {
       res.setHeader('Cache-Control', 'no-cache'); // easy dev iteration
     }
   },
