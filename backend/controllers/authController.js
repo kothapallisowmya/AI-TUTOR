@@ -52,7 +52,16 @@ async function signup(req, res) {
       await user.save();
     } else {
       // Create entirely new user
-      const newSessionId = sessionId || 'sess-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+      let newSessionId = sessionId;
+      if (newSessionId) {
+        const sessionTaken = await User.findOne({ sessionId: newSessionId });
+        if (sessionTaken) {
+          newSessionId = 'sess-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+        }
+      } else {
+        newSessionId = 'sess-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+      }
+      
       user = await User.create({
         name,
         email,

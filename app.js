@@ -20,7 +20,7 @@ const USE_REAL_AI = true; // Enabled Gemini API Backend
 // frontend always works even when the backend is offline.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = 'https://ai-tutor-production-89fe.up.railway.app/api';
 
 const API = {
   getHeaders() {
@@ -1403,6 +1403,9 @@ async function handleAuthSubmit(e) {
 
     if (res && res.ok) {
       localStorage.setItem('btech_token', res.token);
+      if (res.user && res.user.sessionId) {
+        localStorage.setItem('btech_session_id', res.user.sessionId);
+      }
       currentToken = res.token;
       currentUser = res.user;
       renderUserMenu();
